@@ -1,7 +1,7 @@
 """Membangun laporan PDF UTP Praktikum Mobile Programming (aplikasi ResepKu).
 
 Jalankan dari folder proyek:
-    pip install reportlab
+    pip install reportlab pypdf
     python build_report.py
 Hasil: Laporan_UTP_ResepKu.pdf
 """
@@ -9,7 +9,7 @@ Hasil: Laporan_UTP_ResepKu.pdf
 import os
 
 from reportlab.lib import colors
-from reportlab.lib.enums import TA_JUSTIFY
+from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import cm
@@ -23,58 +23,75 @@ from reportlab.platypus import (
     Table,
     TableStyle,
 )
+from reportlab.platypus.tableofcontents import TableOfContents
 
 # ---------------------------------------------------------------- identitas
-NAMA = "Abdullah"
+NAMA = "Abdullah Abdulaziz"
 NPM = "065124029"
 KELAS = "A"
+DOSEN = ""  # isi nama dosen pengampu bila ingin ditampilkan di sampul
 JUDUL_APP = "ResepKu - Katalog Resep Masakan"
+MATA_KULIAH = "PRAKTIKUM MOBILE PROGRAMMING"
 OPSI = "Opsi 3 (Gabungan REST API + Penyimpanan Lokal)"
 GITHUB_URL = "https://github.com/azz87966-wq/resep_ku"
+TAHUN = "2026"
 
 OUTPUT = "Laporan_UTP_ResepKu.pdf"
 BASE = os.path.dirname(os.path.abspath(__file__))
 SHOTS = os.path.join(BASE, "screenshots")
+LOGO = os.path.join(BASE, "assets", "logo_unpak.jpg")
 
-ACCENT = colors.HexColor("#C2410C")
-INK = colors.HexColor("#1F2937")
+ACCENT = colors.HexColor("#7A2E12")
+INK = colors.HexColor("#111827")
 MUTED = colors.HexColor("#6B7280")
-LINE = colors.HexColor("#E5E7EB")
-CODE_BG = colors.HexColor("#F7F7F8")
+LINE = colors.HexColor("#D1D5DB")
+CODE_BG = colors.HexColor("#F5F5F6")
+
+BODY_FONT = "Times-Roman"
+BODY_BOLD = "Times-Bold"
 
 styles = getSampleStyleSheet()
 
-S_TITLE = ParagraphStyle(
-    "TitleX", parent=styles["Title"], fontSize=20, leading=25,
-    textColor=INK, spaceAfter=2,
+S_COVER_TITLE = ParagraphStyle(
+    "CoverTitle", parent=styles["Normal"], fontName=BODY_BOLD, fontSize=17,
+    leading=23, alignment=TA_CENTER, textColor=INK, spaceAfter=6,
 )
-S_SUB = ParagraphStyle(
-    "SubX", parent=styles["Normal"], fontSize=10.5, leading=14,
-    textColor=MUTED, alignment=1, spaceAfter=16,
+S_COVER_SUB = ParagraphStyle(
+    "CoverSub", parent=styles["Normal"], fontName=BODY_BOLD, fontSize=13.5,
+    leading=19, alignment=TA_CENTER, textColor=INK,
+)
+S_COVER_TEXT = ParagraphStyle(
+    "CoverText", parent=styles["Normal"], fontName=BODY_FONT, fontSize=12,
+    leading=18, alignment=TA_CENTER, textColor=INK,
+)
+S_COVER_NAME = ParagraphStyle(
+    "CoverName", parent=S_COVER_TEXT, fontName=BODY_BOLD, fontSize=12.5,
 )
 S_H1 = ParagraphStyle(
-    "H1X", parent=styles["Heading1"], fontSize=13.5, leading=17,
-    textColor=ACCENT, spaceBefore=16, spaceAfter=7,
+    "H1X", parent=styles["Heading1"], fontName=BODY_BOLD, fontSize=13,
+    leading=17, textColor=ACCENT, spaceBefore=15, spaceAfter=7,
 )
 S_H2 = ParagraphStyle(
-    "H2X", parent=styles["Heading2"], fontSize=11.5, leading=15,
-    textColor=INK, spaceBefore=11, spaceAfter=5,
+    "H2X", parent=styles["Heading2"], fontName=BODY_BOLD, fontSize=11.5,
+    leading=15, textColor=INK, spaceBefore=11, spaceAfter=5,
 )
 S_BODY = ParagraphStyle(
-    "BodyX", parent=styles["BodyText"], fontSize=10.2, leading=15,
-    textColor=INK, alignment=TA_JUSTIFY, spaceAfter=7,
+    "BodyX", parent=styles["BodyText"], fontName=BODY_FONT, fontSize=11,
+    leading=16, textColor=INK, alignment=TA_JUSTIFY, spaceAfter=7,
 )
 S_BULLET = ParagraphStyle(
     "BulletX", parent=S_BODY, leftIndent=14, bulletIndent=4, spaceAfter=4,
 )
 S_CODE = ParagraphStyle(
     "CodeX", parent=styles["Code"], fontSize=7.9, leading=10.4,
-    textColor=INK, backColor=CODE_BG, borderPadding=7,
-    leftIndent=2, rightIndent=2, spaceBefore=3, spaceAfter=9,
+    textColor=INK, backColor=CODE_BG, borderPadding=7, borderWidth=0.4,
+    borderColor=LINE, leftIndent=2, rightIndent=2, spaceBefore=3,
+    spaceAfter=9,
 )
 S_CAP = ParagraphStyle(
-    "CapX", parent=styles["Normal"], fontSize=9, leading=12,
-    textColor=MUTED, alignment=1, spaceBefore=4, spaceAfter=12,
+    "CapX", parent=styles["Normal"], fontName=BODY_FONT, fontSize=9.5,
+    leading=13, textColor=MUTED, alignment=TA_CENTER, spaceBefore=4,
+    spaceAfter=12,
 )
 
 
@@ -102,10 +119,11 @@ def table(rows, widths):
     t.setStyle(
         TableStyle(
             [
-                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-                ("FONTSIZE", (0, 0), (-1, -1), 9.2),
+                ("FONTNAME", (0, 0), (-1, -1), BODY_FONT),
+                ("FONTNAME", (0, 0), (-1, 0), BODY_BOLD),
+                ("FONTSIZE", (0, 0), (-1, -1), 10),
                 ("TEXTCOLOR", (0, 0), (-1, -1), INK),
-                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#FDF1EC")),
+                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#F1E7E2")),
                 ("GRID", (0, 0), (-1, -1), 0.4, LINE),
                 ("VALIGN", (0, 0), (-1, -1), "TOP"),
                 ("TOPPADDING", (0, 0), (-1, -1), 5),
@@ -117,19 +135,18 @@ def table(rows, widths):
     return t
 
 
-def screenshot(filename, caption, max_h=11.0 * cm):
+def screenshot(filename, caption, max_h=10.5 * cm):
     """Menyisipkan screenshot kalau filenya ada."""
     path = os.path.join(SHOTS, filename)
     if not os.path.exists(path):
-        return [
-            para(f"<i>[screenshots/{filename} belum tersedia]</i>", S_CAP)
-        ]
+        return [para(f"<i>[screenshots/{filename} belum tersedia]</i>", S_CAP)]
+
     from reportlab.lib.utils import ImageReader
 
     iw, ih = ImageReader(path).getSize()
     h = max_h
     w = iw * (h / ih)
-    max_w = 7.0 * cm
+    max_w = 6.8 * cm
     if w > max_w:
         w = max_w
         h = ih * (w / iw)
@@ -138,42 +155,131 @@ def screenshot(filename, caption, max_h=11.0 * cm):
     return [KeepTogether([img, para(caption, S_CAP)])]
 
 
-def header_footer(canvas, doc):
-    canvas.saveState()
-    canvas.setStrokeColor(LINE)
-    canvas.setLineWidth(0.5)
-    canvas.line(2 * cm, A4[1] - 1.5 * cm, A4[0] - 2 * cm, A4[1] - 1.5 * cm)
-    canvas.setFont("Helvetica", 7.5)
-    canvas.setFillColor(MUTED)
-    canvas.drawString(
-        2 * cm, A4[1] - 1.35 * cm,
-        f"UTP Praktikum Mobile Programming - {NAMA} ({NPM})",
-    )
-    canvas.drawRightString(
-        A4[0] - 2 * cm, 1.2 * cm, f"Halaman {doc.page}"
-    )
-    canvas.restoreState()
+# ------------------------------------------------------------------ sampul
+def cover():
+    f = [Spacer(1, 0.4 * cm)]
+    f.append(para("LAPORAN UJIAN TENGAH PRAKTIKUM", S_COVER_TITLE))
+    f.append(para(MATA_KULIAH, S_COVER_SUB))
+    f.append(Spacer(1, 0.5 * cm))
+    f.append(para(f"<i>{JUDUL_APP}</i>", S_COVER_TEXT))
+
+    if os.path.exists(LOGO):
+        logo = Image(LOGO, width=4.6 * cm, height=4.7 * cm)
+        logo.hAlign = "CENTER"
+        f.append(Spacer(1, 2.1 * cm))
+        f.append(logo)
+        f.append(Spacer(1, 2.1 * cm))
+    else:
+        f.append(Spacer(1, 4 * cm))
+
+    if DOSEN:
+        f.append(para("Dosen Pengampu :", S_COVER_TEXT))
+        f.append(para(DOSEN, S_COVER_NAME))
+        f.append(Spacer(1, 0.9 * cm))
+
+    f.append(para("Disusun Oleh :", S_COVER_TEXT))
+    f.append(para(NAMA, S_COVER_NAME))
+    f.append(para(NPM, S_COVER_NAME))
+    f.append(para(f"Kelas {KELAS}", S_COVER_TEXT))
+
+    f.append(Spacer(1, 3.1 * cm))
+    f.append(para("PROGRAM STUDI ILMU KOMPUTER", S_COVER_SUB))
+    f.append(para(
+        "FAKULTAS MATEMATIKA DAN ILMU PENGETAHUAN ALAM", S_COVER_SUB))
+    f.append(para("UNIVERSITAS PAKUAN", S_COVER_SUB))
+    f.append(para("BOGOR", S_COVER_SUB))
+    f.append(para(TAHUN, S_COVER_SUB))
+    f.append(PageBreak())
+    return f
 
 
-def build():
-    doc = SimpleDocTemplate(
-        os.path.join(BASE, OUTPUT),
-        pagesize=A4,
-        leftMargin=2 * cm,
-        rightMargin=2 * cm,
-        topMargin=2 * cm,
-        bottomMargin=1.8 * cm,
-        title=f"Laporan UTP Mobile Programming - {NAMA}",
-        author=NAMA,
+# ---------------------------------------------------------- kata pengantar
+def kata_pengantar():
+    f = [para("KATA PENGANTAR", S_H1)]
+    f.append(
+        para(
+            "Puji syukur ke hadirat Allah SWT atas segala rahmat dan "
+            "karunia-Nya, sehingga penulis dapat menyelesaikan laporan "
+            "Ujian Tengah Praktikum (UTP) mata kuliah Praktikum Mobile "
+            "Programming yang berjudul “ResepKu - Katalog Resep "
+            "Masakan” ini dengan baik dan tepat waktu."
+        )
     )
+    f.append(
+        para(
+            "Laporan ini disusun untuk memenuhi ketentuan Ujian Tengah "
+            "Praktikum, yaitu membangun sebuah aplikasi mobile menggunakan "
+            "Flutter beserta laporan pengerjaannya. Aplikasi yang penulis "
+            "bangun mengambil data resep dari Public REST API dan "
+            "menyimpan resep favorit beserta catatan pribadi pengguna ke "
+            "penyimpanan lokal perangkat, sehingga termasuk ke dalam Opsi 3 "
+            "(gabungan keduanya)."
+        )
+    )
+    f.append(
+        para(
+            "Penulis mengucapkan terima kasih kepada dosen dan asisten "
+            "praktikum mata kuliah Praktikum Mobile Programming atas "
+            "bimbingan dan ilmu yang telah diberikan, serta kepada rekan-"
+            "rekan seangkatan atas diskusi yang bermanfaat selama proses "
+            "pengerjaan."
+        )
+    )
+    f.append(
+        para(
+            "Penulis menyadari laporan ini masih memiliki kekurangan. Oleh "
+            "karena itu, kritik dan saran yang membangun sangat penulis "
+            "harapkan demi penyempurnaan di masa mendatang. Semoga laporan "
+            "ini bermanfaat bagi pembaca."
+        )
+    )
+    f.append(Spacer(1, 0.8 * cm))
 
+    sign = Table(
+        [
+            [para(f"Bogor, {TAHUN}", S_BODY)],
+            [Spacer(1, 1.5 * cm)],
+            [para(NAMA, S_BODY)],
+            [para(NPM, S_BODY)],
+        ],
+        colWidths=[6 * cm],
+        hAlign="RIGHT",
+    )
+    sign.setStyle(
+        TableStyle(
+            [
+                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                ("TOPPADDING", (0, 0), (-1, -1), 0),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+            ]
+        )
+    )
+    f.append(sign)
+    f.append(PageBreak())
+    return f
+
+
+# ------------------------------------------------------------- daftar isi
+def daftar_isi():
+    toc = TableOfContents()
+    toc.levelStyles = [
+        ParagraphStyle(
+            "TOC1", fontName=BODY_BOLD, fontSize=11, leading=19,
+            textColor=INK,
+        ),
+        ParagraphStyle(
+            "TOC2", fontName=BODY_FONT, fontSize=10.5, leading=16,
+            leftIndent=18, textColor=INK,
+        ),
+    ]
+    return [para("DAFTAR ISI", S_H1), Spacer(1, 4), toc, PageBreak()]
+
+
+# ----------------------------------------------------------------- konten
+def isi():
     f = []
 
-    # ------------------------------------------------------------- judul
-    f.append(para("LAPORAN UJIAN TENGAH PRAKTIKUM", S_TITLE))
-    f.append(para("Praktikum Mobile Programming - Aplikasi ResepKu", S_SUB))
-
-    # ------------------------------------------- 1. identitas & proyek
+    # --------------------------------------- 1. identitas & info proyek
     f.append(para("1. Identitas dan Informasi Proyek", S_H1))
     f.append(
         table(
@@ -203,7 +309,7 @@ def build():
             "API dengan penyimpanan lokal, aplikasi ini mengambil Opsi 3."
         )
     )
-    f.append(para("Fitur utama:", S_H2))
+    f.append(para("Fitur utama", S_H2))
     f.extend(
         bullets(
             [
@@ -583,6 +689,7 @@ def build():
         )
     )
 
+    # -------------------------------------------------- 7. pengujian
     f.append(para("7. Pengujian", S_H1))
     f.append(
         para(
@@ -608,7 +715,8 @@ def build():
         )
     )
 
-    f.append(para("Penutup", S_H1))
+    # ---------------------------------------------------- 8. penutup
+    f.append(para("8. Penutup", S_H1))
     f.append(
         para(
             "Seluruh ketentuan UTP sudah dipenuhi: aplikasi memiliki tiga "
@@ -616,11 +724,61 @@ def build():
             "memakai http sekaligus menyimpan favorit dan catatan memakai "
             "shared_preferences (Opsi 3), serta sudah menangani keadaan "
             "loading, error, dan data kosong. Kode sumber lengkap tersedia "
-            f'di repositori GitHub: <font color="#C2410C">{GITHUB_URL}</font>.'
+            f'di repositori GitHub: <font color="#7A2E12">{GITHUB_URL}</font>.'
         )
     )
+    return f
 
-    doc.build(f, onFirstPage=header_footer, onLaterPages=header_footer)
+
+# ---------------------------------------------------------- header/footer
+def decorate(canvas, doc):
+    canvas.saveState()
+    canvas.setStrokeColor(LINE)
+    canvas.setLineWidth(0.5)
+    canvas.line(2.2 * cm, A4[1] - 1.5 * cm, A4[0] - 2.2 * cm, A4[1] - 1.5 * cm)
+    canvas.setFont(BODY_FONT, 8.5)
+    canvas.setFillColor(MUTED)
+    canvas.drawString(
+        2.2 * cm, A4[1] - 1.35 * cm,
+        f"Laporan UTP Praktikum Mobile Programming - {NAMA} ({NPM})",
+    )
+    canvas.drawRightString(A4[0] - 2.2 * cm, 1.3 * cm, str(doc.page))
+    canvas.restoreState()
+
+
+def blank(canvas, doc):
+    """Sampul tanpa header dan nomor halaman."""
+    return
+
+
+class ReportDoc(SimpleDocTemplate):
+    """SimpleDocTemplate yang mencatat judul bab untuk Daftar Isi."""
+
+    def afterFlowable(self, flowable):
+        if isinstance(flowable, Paragraph):
+            name = flowable.style.name
+            text = flowable.getPlainText()
+            if name == "H1X" and text != "DAFTAR ISI":
+                self.notify("TOCEntry", (0, text, self.page))
+            elif name == "H2X" and text[:1].isdigit():
+                self.notify("TOCEntry", (1, text, self.page))
+
+
+def build():
+    doc = ReportDoc(
+        os.path.join(BASE, OUTPUT),
+        pagesize=A4,
+        leftMargin=2.2 * cm,
+        rightMargin=2.2 * cm,
+        topMargin=2.1 * cm,
+        bottomMargin=2 * cm,
+        title=f"Laporan UTP Praktikum Mobile Programming - {NAMA}",
+        author=NAMA,
+        subject=JUDUL_APP,
+    )
+
+    story = cover() + kata_pengantar() + daftar_isi() + isi()
+    doc.multiBuild(story, onFirstPage=blank, onLaterPages=decorate)
     print(f"Laporan dibuat: {os.path.join(BASE, OUTPUT)}")
 
 
