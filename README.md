@@ -15,6 +15,16 @@ memakai paket `http`. Resep yang disukai beserta catatan pribadi disimpan di
 perangkat memakai `shared_preferences`, sehingga tetap tersedia saat aplikasi
 dibuka kembali tanpa koneksi internet.
 
+## Tangkapan layar
+
+| Beranda | Pencarian | Detail |
+| --- | --- | --- |
+| <img src="screenshots/home.jpg" width="230"> | <img src="screenshots/search.jpg" width="230"> | <img src="screenshots/detail.jpg" width="230"> |
+
+| Catatan pribadi | Favorit |
+| --- | --- |
+| <img src="screenshots/detail_note.jpg" width="230"> | <img src="screenshots/favorites.jpg" width="230"> |
+
 ## Tiga halaman
 
 | Halaman | File | Isi |
