@@ -30,7 +30,7 @@ NPM = "065124029"
 KELAS = "A"
 JUDUL_APP = "ResepKu - Katalog Resep Masakan"
 OPSI = "Opsi 3 (Gabungan REST API + Penyimpanan Lokal)"
-GITHUB_URL = "https://github.com/abdullah0651/resep_ku"
+GITHUB_URL = "https://github.com/azz87966-wq/resep_ku"
 
 OUTPUT = "Laporan_UTP_ResepKu.pdf"
 BASE = os.path.dirname(os.path.abspath(__file__))
