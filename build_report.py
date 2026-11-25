@@ -30,22 +30,23 @@ NAMA = "Abdullah Abdulaziz"
 NPM = "065124029"
 KELAS = "A"
 DOSEN = ""  # isi nama dosen pengampu bila ingin ditampilkan di sampul
-JUDUL_APP = "ResepKu - Katalog Resep Masakan"
+JUDUL_APP = "ResepKu: Katalog Resep Masakan"
 MATA_KULIAH = "PRAKTIKUM MOBILE PROGRAMMING"
 OPSI = "Opsi 3 (Gabungan REST API + Penyimpanan Lokal)"
 GITHUB_URL = "https://github.com/azz87966-wq/resep_ku"
 TAHUN = "2026"
+TANGGAL = "25 November 2026"
 
 OUTPUT = "Laporan_UTP_ResepKu.pdf"
 BASE = os.path.dirname(os.path.abspath(__file__))
 SHOTS = os.path.join(BASE, "screenshots")
 LOGO = os.path.join(BASE, "assets", "logo_unpak.jpg")
 
-ACCENT = colors.HexColor("#7A2E12")
+ACCENT = colors.HexColor("#000000")
 INK = colors.HexColor("#111827")
 MUTED = colors.HexColor("#6B7280")
 LINE = colors.HexColor("#D1D5DB")
-CODE_BG = colors.HexColor("#F5F5F6")
+CODE_BG = colors.HexColor("#F4F4F4")
 
 BODY_FONT = "Times-Roman"
 BODY_BOLD = "Times-Bold"
@@ -123,7 +124,7 @@ def table(rows, widths):
                 ("FONTNAME", (0, 0), (-1, 0), BODY_BOLD),
                 ("FONTSIZE", (0, 0), (-1, -1), 10),
                 ("TEXTCOLOR", (0, 0), (-1, -1), INK),
-                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#F1E7E2")),
+                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#ECECEC")),
                 ("GRID", (0, 0), (-1, -1), 0.4, LINE),
                 ("VALIGN", (0, 0), (-1, -1), "TOP"),
                 ("TOPPADDING", (0, 0), (-1, -1), 5),
@@ -201,7 +202,7 @@ def kata_pengantar():
             "Puji syukur ke hadirat Allah SWT atas segala rahmat dan "
             "karunia-Nya, sehingga penulis dapat menyelesaikan laporan "
             "Ujian Tengah Praktikum (UTP) mata kuliah Praktikum Mobile "
-            "Programming yang berjudul “ResepKu - Katalog Resep "
+            "Programming yang berjudul “ResepKu: Katalog Resep "
             "Masakan” ini dengan baik dan tepat waktu."
         )
     )
@@ -237,10 +238,10 @@ def kata_pengantar():
 
     sign = Table(
         [
-            [para(f"Bogor, {TAHUN}", S_BODY)],
+            [para(f"Bogor, {TANGGAL}", S_COVER_TEXT)],
             [Spacer(1, 1.5 * cm)],
-            [para(NAMA, S_BODY)],
-            [para(NPM, S_BODY)],
+            [para(NAMA, S_COVER_NAME)],
+            [para(NPM, S_COVER_TEXT)],
         ],
         colWidths=[6 * cm],
         hAlign="RIGHT",
@@ -309,23 +310,23 @@ def isi():
             "API dengan penyimpanan lokal, aplikasi ini mengambil Opsi 3."
         )
     )
-    f.append(para("Fitur utama", S_H2))
+    f.append(para("Fitur Utama Aplikasi", S_H2))
     f.extend(
         bullets(
             [
-                "<b>Daftar resep dari API</b> - memuat 30 resep lengkap "
+                "<b>Daftar resep dari API</b>: memuat 30 resep lengkap "
                 "dengan gambar, asal masakan, tingkat kesulitan, waktu "
                 "memasak, kalori, dan rating.",
-                "<b>Pencarian resep</b> - memakai endpoint "
+                "<b>Pencarian resep</b>: memakai endpoint "
                 "<font face='Courier'>/recipes/search?q=</font> pada API.",
-                "<b>Detail resep</b> - menampilkan bahan-bahan dan langkah "
+                "<b>Detail resep</b>: menampilkan bahan-bahan dan langkah "
                 "memasak yang bernomor.",
-                "<b>Simpan favorit</b> - satu ketukan pada ikon hati untuk "
+                "<b>Simpan favorit</b>: satu ketukan pada ikon hati untuk "
                 "menyimpan atau menghapus resep di penyimpanan lokal.",
-                "<b>Catatan pribadi</b> - pengguna menulis catatan sendiri "
+                "<b>Catatan pribadi</b>: pengguna menulis catatan sendiri "
                 "pada sebuah resep, disimpan lokal dan tampil juga pada "
                 "kartu resep di halaman Favorit.",
-                "<b>Penanganan keadaan</b> - indikator loading, tampilan "
+                "<b>Penanganan kondisi</b>: indikator loading, tampilan "
                 "error dengan tombol Coba Lagi, tampilan hasil pencarian "
                 "kosong, tarik untuk menyegarkan, dan gambar pengganti bila "
                 "gambar gagal dimuat.",
@@ -347,8 +348,8 @@ def isi():
                     "^2.3.3",
                     "Menyimpan favorit dan catatan di perangkat",
                 ],
-                ["cupertino_icons", "^1.0.8", "Set ikon tambahan"],
-                ["flutter_lints", "^5.0.0", "Aturan analisis kode (dev)"],
+                ["cupertino_icons", "^1.0.8", "Kumpulan ikon bawaan tambahan"],
+                ["flutter_lints", "^5.0.0", "Aturan analisis kode (dependensi dev)"],
             ],
             [4.6 * cm, 2.6 * cm, 9.3 * cm],
         )
@@ -387,7 +388,7 @@ def isi():
             '      "id": 1,\n'
             '      "name": "Classic Margherita Pizza",\n'
             '      "ingredients": ["Pizza dough", "Tomato sauce", ...],\n'
-            '      "instructions": ["Preheat the oven to 475F", ...],\n'
+            '      "instructions": ["Preheat the oven to 475°F", ...],\n'
             '      "prepTimeMinutes": 20,\n'
             '      "cookTimeMinutes": 15,\n'
             '      "servings": 4,\n'
@@ -474,7 +475,7 @@ def isi():
     f.extend(
         screenshot(
             "home.jpg",
-            "Gambar 1. Halaman Beranda - daftar resep hasil pemanggilan "
+            "Gambar 1. Halaman Beranda: daftar resep hasil pemanggilan "
             "REST API beserta kolom pencarian.",
         )
     )
@@ -488,7 +489,7 @@ def isi():
     f.extend(
         screenshot(
             "detail.jpg",
-            "Gambar 3. Halaman Detail - ikon hati berubah merah dan muncul "
+            "Gambar 3. Halaman Detail: ikon hati berubah merah dan muncul "
             "pemberitahuan bahwa resep tersimpan ke favorit.",
         )
     )
@@ -502,7 +503,7 @@ def isi():
     f.extend(
         screenshot(
             "favorites.jpg",
-            "Gambar 5. Halaman Favorit - dua resep beserta cuplikan catatan, "
+            "Gambar 5. Halaman Favorit: dua resep beserta cuplikan catatan, "
             "seluruhnya dibaca dari SharedPreferences.",
         )
     )
@@ -531,7 +532,7 @@ def isi():
             "    final response = await _client.get(uri)\n"
             "        .timeout(const Duration(seconds: 15));\n"
             "    if (response.statusCode != 200) {\n"
-            "      throw ApiException('Server membalas kode ${response.statusCode}.');\n"
+            "      throw ApiException('Server membalas dengan kode ${response.statusCode}.');\n"
             "    }\n"
             "    final body = jsonDecode(response.body) as Map<String, dynamic>;\n"
             "    final list = (body['recipes'] as List<dynamic>? ?? const []);\n"
@@ -700,11 +701,11 @@ def isi():
     f.extend(
         bullets(
             [
-                "<font face='Courier'>flutter analyze</font> - "
+                "<font face='Courier'>flutter analyze</font>: "
                 "<b>No issues found!</b> (tidak ada peringatan maupun error).",
-                "<font face='Courier'>flutter test</font> - <b>3 pengujian "
+                "<font face='Courier'>flutter test</font>: <b>3 pengujian "
                 "lulus</b> untuk model Recipe: pembacaan JSON dari API, "
-                "putaran toJson/fromJson untuk penyimpanan lokal, dan data "
+                "siklus toJson/fromJson untuk penyimpanan lokal, dan data "
                 "yang tidak lengkap.",
                 "Uji manual: daftar resep tampil dari API, pencarian "
                 "\"pizza\" mengembalikan hasil yang benar, resep tersimpan "
@@ -724,7 +725,7 @@ def isi():
             "memakai http sekaligus menyimpan favorit dan catatan memakai "
             "shared_preferences (Opsi 3), serta sudah menangani keadaan "
             "loading, error, dan data kosong. Kode sumber lengkap tersedia "
-            f'di repositori GitHub: <font color="#7A2E12">{GITHUB_URL}</font>.'
+            f"di repositori GitHub: {GITHUB_URL}."
         )
     )
     return f
@@ -740,7 +741,7 @@ def decorate(canvas, doc):
     canvas.setFillColor(MUTED)
     canvas.drawString(
         2.2 * cm, A4[1] - 1.35 * cm,
-        f"Laporan UTP Praktikum Mobile Programming - {NAMA} ({NPM})",
+        f"Laporan UTP Praktikum Mobile Programming  |  {NAMA} ({NPM})",
     )
     canvas.drawRightString(A4[0] - 2.2 * cm, 1.3 * cm, str(doc.page))
     canvas.restoreState()
