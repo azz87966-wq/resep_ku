@@ -647,7 +647,7 @@ def isi():
             [
                 ["Kendala", "Solusi"],
                 [
-                    "Objek Recipe tidak bisa langsung disimpan "
+                    "Objek Recipe tidak bisa langsung disimpan ke "
                     "SharedPreferences karena hanya menerima tipe dasar.",
                     "Menambahkan toJson() pada model, lalu menyimpan "
                     "seluruh daftar sebagai satu String JSON dengan "
@@ -673,15 +673,15 @@ def isi():
                     "tombol Tampilkan Semua.",
                 ],
                 [
-                    "setState terpanggil sesudah halaman ditutup sehingga "
-                    "muncul peringatan di konsol.",
+                    "Fungsi setState terpanggil sesudah halaman ditutup "
+                    "sehingga muncul peringatan di konsol.",
                     "Memeriksa properti mounted sebelum setState pada "
                     "setiap fungsi async.",
                 ],
                 [
-                    "Permintaan API bisa menggantung lama saat jaringan "
+                    "Permintaan API bisa menggantung terlalu lama saat jaringan "
                     "bermasalah.",
-                    "Memberi .timeout(Duration(seconds: 15)) dan "
+                    "Menambahkan .timeout(Duration(seconds: 15)) dan "
                     "membungkus kegagalan menjadi ApiException beserta "
                     "tombol Coba Lagi.",
                 ],
@@ -723,7 +723,7 @@ def isi():
             "Seluruh ketentuan UTP sudah dipenuhi: aplikasi memiliki tiga "
             "halaman yang terhubung, mengambil data dari Public REST API "
             "memakai http sekaligus menyimpan favorit dan catatan memakai "
-            "shared_preferences (Opsi 3), serta sudah menangani keadaan "
+            "shared_preferences (Opsi 3), serta sudah menangani kondisi "
             "loading, error, dan data kosong. Kode sumber lengkap tersedia "
             f"di repositori GitHub: {GITHUB_URL}."
         )
