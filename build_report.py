@@ -115,14 +115,29 @@ def code(text):
     return Paragraph(f"<font face='Courier'>{safe}</font>", S_CODE)
 
 
+S_TD = ParagraphStyle(
+    "TD", parent=styles["Normal"], fontName=BODY_FONT, fontSize=10,
+    leading=13.5, textColor=INK,
+)
+S_TH = ParagraphStyle("TH", parent=S_TD, fontName=BODY_BOLD)
+
+
+def _cell(value, header=False):
+    """Setiap sel dibungkus Paragraph supaya teksnya ikut turun baris."""
+    if not isinstance(value, str):
+        return value
+    safe = value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    return Paragraph(safe, S_TH if header else S_TD)
+
+
 def table(rows, widths):
-    t = Table(rows, colWidths=widths, hAlign="LEFT")
+    data = [
+        [_cell(c, header=(i == 0)) for c in row] for i, row in enumerate(rows)
+    ]
+    t = Table(data, colWidths=widths, hAlign="LEFT")
     t.setStyle(
         TableStyle(
             [
-                ("FONTNAME", (0, 0), (-1, -1), BODY_FONT),
-                ("FONTNAME", (0, 0), (-1, 0), BODY_BOLD),
-                ("FONTSIZE", (0, 0), (-1, -1), 10),
                 ("TEXTCOLOR", (0, 0), (-1, -1), INK),
                 ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#ECECEC")),
                 ("GRID", (0, 0), (-1, -1), 0.4, LINE),
